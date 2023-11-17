@@ -64,7 +64,7 @@ impl KeyManager {
     }
 
     pub fn contains_key(&self, key: String) -> bool {
-        self.keys.iter().any(|k| *k.key == key)
+        self.keys.iter().any(|k| k.key == key)
     }
 
     pub fn create_key(&mut self, server_id: u64, user_id: u64) -> String {
