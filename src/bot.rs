@@ -50,6 +50,10 @@ async fn setup(
     ctx: Context<'_>,
     #[description = "role"] role: serenity_prelude::Role,
 ) -> Result<(), Error> {
+    if !ctx.author_member().await.unwrap().permissions.unwrap().administrator() {
+        return Ok(());
+    }
+
     let guild_id = ctx.guild_id().unwrap();
 
     ctx.channel_id()
