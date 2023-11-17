@@ -1,0 +1,29 @@
+<html>
+<head>
+    <title>"AntiBot"</title>
+    <script src="https://challenges.cloudflare.com/turnstile/v0/api.js" async defer></script>
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+</head>
+
+<body>
+    <main>
+        <div style="text-align:center" class="cf-turnstile" data-sitekey="0x4AAAAAAANQlYeKN7b5lSvO" data-callback="verify"></div>
+    </main>
+</body>
+
+<script>
+    function verify(token) {
+        fetch("/complete_verify", {
+            method: "POST",
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                key: "{{key}}",
+                token: token
+            })
+        });
+    }
+</script>
+
+</html>
