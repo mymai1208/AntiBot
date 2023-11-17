@@ -2,9 +2,7 @@ use std::sync::Arc;
 
 use poise::{
     builtins,
-    serenity_prelude::{
-        self, interaction, GatewayIntents, Interaction,
-    },
+    serenity_prelude::{self, interaction, GatewayIntents, Interaction},
     Event, Framework, FrameworkOptions,
 };
 
@@ -50,7 +48,14 @@ async fn setup(
     ctx: Context<'_>,
     #[description = "role"] role: serenity_prelude::Role,
 ) -> Result<(), Error> {
-    if !ctx.author_member().await.unwrap().permissions.unwrap().administrator() {
+    if !ctx
+        .author_member()
+        .await
+        .unwrap()
+        .permissions
+        .unwrap()
+        .administrator()
+    {
         return Ok(());
     }
 
@@ -79,14 +84,23 @@ async fn setup(
     Ok(())
 }
 
-async fn on_event(
-    ctx: &serenity_prelude::Context,
-    event: &Event<'_>
-) -> Result<(), Error> {
+async fn on_event(ctx: &serenity_prelude::Context, event: &Event<'_>) -> Result<(), Error> {
     match event {
         Event::InteractionCreate { interaction } => {
             if let Interaction::MessageComponent(component) = interaction {
                 if component.data.custom_id != "verify" {
+                    return Ok(());
+                }
+
+                if component.member.as_ref().unwrap().roles.iter().any(|f| {
+                    *f.as_u64()
+                        == CONFIG
+                            .lock()
+                            .unwrap()
+                            .get_server_config(*component.guild_id.unwrap().as_u64())
+                            .unwrap()
+                            .grant_role_id
+                }) {
                     return Ok(());
                 }
 
