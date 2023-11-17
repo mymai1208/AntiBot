@@ -91,7 +91,7 @@ async fn on_event(
                         r.kind(interaction::InteractionResponseType::ChannelMessageWithSource)
                             .interaction_response_data(|d| {
                                 let url = format!(
-                                    "http://localhost:3000/verify/{}",
+                                    "https://verify.mymai1208.net/verify/{}",
                                     KEY_MANAGER.lock().unwrap().create_key(
                                         *component.guild_id.unwrap().as_u64(),
                                         *component.user.id.as_u64()
