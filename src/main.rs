@@ -116,6 +116,10 @@ async fn complete_verify_page(
         return "failure";
     }
 
+    if !KEY_MANAGER.lock().unwrap().contains_key(payload.key.clone()) {
+        return "failure";
+    }
+
     let key = KEY_MANAGER.lock().unwrap().get_key(payload.key).unwrap().clone();
     let config = CONFIG.lock().unwrap().get_server_config(key.server_id).unwrap().clone();
 
